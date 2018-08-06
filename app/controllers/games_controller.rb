@@ -35,7 +35,10 @@ class GamesController < ApplicationController
   def evaluate_results(is_english_word, is_in_grid)
     pretty_grid = @letters.join(", ")
     if is_english_word && is_in_grid
-      return "<strong>Congratulations!</strong> #{@word} is a valid English word!"
+      @score = session[:score].nil? ? 0 : session[:score]
+      @score += @word.length
+      session[:score] = @score
+      return "<strong>Congratulations!</strong> #{@word} is a valid English word! Your score is #{@score}"
     elsif is_english_word && !is_in_grid
       return "Sorry, but <strong>#{@word}</strong> can't be built out of #{pretty_grid}"
     elsif !is_english_word && is_in_grid
